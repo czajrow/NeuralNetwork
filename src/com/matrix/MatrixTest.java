@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.function.Function;
+
 import static org.junit.Assert.*;
 
 public class MatrixTest {
@@ -14,6 +16,8 @@ public class MatrixTest {
     private Matrix m4;
     private Matrix m5;
     private Matrix m6;
+    private final Function<Double, Double> function = (x) -> x + 1.0;
+
 
     @Before
     public void setUp() {
@@ -155,5 +159,17 @@ public class MatrixTest {
 
         result.setData(0, 0, 13);
         assertNotEquals(m1.getData(0, 0), result.getData(0, 0));
+    }
+
+    @Test
+    public void map() {
+        m5.map(function);
+        assertArrayEquals(m1.toArray(), m5.toArray(), 0.001);
+    }
+
+    @Test
+    public void map2() {
+        Matrix result = Matrix.map(m5, function);
+        assertArrayEquals(m1.toArray(), result.toArray(), 0.001);
     }
 }

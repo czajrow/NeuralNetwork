@@ -2,6 +2,8 @@ package com.nn;
 
 import com.matrix.Matrix;
 
+import java.util.function.Function;
+
 public class NeuralNetwork {
 
     private int inputNodes;
@@ -14,6 +16,11 @@ public class NeuralNetwork {
     private Matrix weights_HO;
     private Matrix bias_H;
     private Matrix bias_O;
+
+    private final Function<Double, Double> sigmoid = (x) -> 1.0 / (1.0 + Math.exp(-x));
+
+    private final Function<Double, Double> dsigmoid = (y) -> 1.0 * (1.0 - y);
+
 
     public NeuralNetwork(int inputNodes, int hiddenNodes, int outputNodes) {
         this.inputNodes = inputNodes;
@@ -33,11 +40,26 @@ public class NeuralNetwork {
         bias_O.randomize();
     }
 
-    private static double sigmoid(double x) {
-        return 1.0 / (1.0 + Math.exp(-x));
+    public double[] feedforward(double[] inputArray) {
+        return guess(inputArray).toArray();
     }
 
-    private static double dsigmoid(double y) {
-        return y * (1.0 - y);
+    private Matrix guess(double[] inputArray) {
+
+        // generating the hidden outputs
+        Matrix inputs = Matrix.fromArray(inputArray);
+        Matrix hidden = Matrix.multiply(weights_IH, inputs);
+        hidden.add(bias_H);
+
+        // activation function
+        hidden.map(sigmoid);
+
+        // generating the output's output
+        Matrix output = Matrix.multiply(weights_HO, hidden);
+        output.add(bias_O);
+        output.map(sigmoid);
+
+        //returning data
+        return output;
     }
 }

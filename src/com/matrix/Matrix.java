@@ -1,6 +1,7 @@
 package com.matrix;
 
 import java.util.Random;
+import java.util.function.Function;
 
 public class Matrix {
 
@@ -166,6 +167,14 @@ public class Matrix {
         return result;
     }
 
+    public void multiply(Matrix other) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                data[i][j] *= other.data[i][j];
+            }
+        }
+    }
+
     public void multiply(double scalar) {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -183,6 +192,26 @@ public class Matrix {
         }
 
         return new Matrix(rows, cols, array);
+    }
+
+    public void map(Function<Double, Double> function) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                double value = data[i][j];
+                data[i][j] = function.apply(value);
+            }
+        }
+    }
+
+    public static Matrix map(Matrix matrix, Function<Double, Double> function) {
+        Matrix result = new Matrix(matrix.rows, matrix.cols);
+        for (int i = 0; i < matrix.rows; i++) {
+            for (int j = 0; j < matrix.cols; j++) {
+                double value = matrix.data[i][j];
+                result.data[i][j] = function.apply(value);
+            }
+        }
+        return result;
     }
 
     @Override
