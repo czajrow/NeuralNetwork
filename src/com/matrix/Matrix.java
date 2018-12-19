@@ -50,7 +50,7 @@ public class Matrix {
         Random random = new Random();
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                data[i][j] = random.nextDouble();
+                data[i][j] = random.nextDouble() * 2 - 1;
             }
         }
     }
