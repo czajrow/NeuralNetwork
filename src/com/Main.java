@@ -18,7 +18,15 @@ public class Main {
         double[] outputs3 = {1};
         double[] outputs4 = {0};
 
-        for (int i = 0; i < 100000; i++) {
+
+        int n = 100000;
+
+        String anim = "|/-\\";
+        for (int i = 0; i < n; i++) {
+            int x = 100 * i / n;
+            String data = "\r" + anim.charAt(x % anim.length()) + " " + x + "%";
+            System.out.print(data + "\r");
+
             neuralNetwork.train(inputs1, outputs1);
             neuralNetwork.train(inputs2, outputs2);
             neuralNetwork.train(inputs3, outputs3);
